@@ -6,4 +6,5 @@ export const validateDirective =
   (directiveName = DefaultValidateDirectiveName) =>
   (schema: GraphQLSchema) => {
     new GraphQLValidateDirective(schema, directiveName).transformSchema()
+    return schema
   }
