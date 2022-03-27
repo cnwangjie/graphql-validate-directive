@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "lib": ["ES2020"],
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "dist/esm",
+    "declaration": true,
+    "declarationDir": "types",
+    "types": ["jest"]
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "**/*.test.ts",
+  ]
+}
