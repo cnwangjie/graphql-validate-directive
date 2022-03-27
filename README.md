@@ -1,5 +1,10 @@
 # graphql-validate-directive
 
+[![npm](https://img.shields.io/npm/v/graphql-validate-directive?style=flat-square)](https://www.npmjs.com/package/graphql-validate-directive)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/cnwangjie/graphql-validate-directive/Test?label=test&logo=github&style=flat-square)
+![Codecov](https://img.shields.io/codecov/c/github/cnwangjie/graphql-validate-directive?style=flat-square&token=QhjBkB6PwD)
+![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/graphql-validate-directive?style=flat-square)
+
 ### Summary
 
 This is a directive validation library for GraphQL. Inspired by [validate-directive](https://github.com/cjihrig/validate-directive).
