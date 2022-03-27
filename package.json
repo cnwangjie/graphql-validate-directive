@@ -1,22 +1,24 @@
 {
-  "name": "ts-mod",
-  "version": "1.0.0",
+  "name": "graphql-validate-directive",
+  "version": "0.1.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "types/index.d.ts",
-  "files": ["dist"],
-  "repository": "git@github.com:cnwangjie/ts-mod.git",
+  "repository": "https://github.com/cnwangjie/graphql-validate-directive.git",
   "author": "Wang Jie <i@i8e.net>",
   "license": "MIT",
   "devDependencies": {
+    "@graphql-tools/schema": "^8.3.5",
     "@types/jest": "^26.0.21",
+    "@types/lodash": "^4.14.180",
     "@types/mocha": "^8.2.1",
     "@types/node": "^14.14.31",
     "eslint": "^7.21.0",
+    "graphql": "^16.3.0",
     "jest": "^26.6.3",
     "mocha": "^8.3.1",
     "ts-jest": "^26.5.4",
-    "typescript": "^4.2.3"
+    "typescript": "^4.6.3"
   },
   "scripts": {
     "build": "tsc -p .",
@@ -25,7 +27,15 @@
     "test": "jest"
   },
   "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    }
+  },
+  "dependencies": {
+    "@graphql-tools/utils": "^8.6.5",
+    "ajv": "^8.11.0",
+    "apollo-server-plugin-base": "^3.5.2",
+    "lodash": "^4.17.21"
   }
 }
