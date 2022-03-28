@@ -1,6 +1,7 @@
 {
   "name": "graphql-validate-directive",
-  "version": "0.1.2",
+  "description": "A GraphQL directive for input validation",
+  "version": "0.1.5",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "types/index.d.ts",
@@ -11,13 +12,12 @@
     "@graphql-tools/schema": "^8.3.5",
     "@types/jest": "^26.0.21",
     "@types/lodash": "^4.14.180",
-    "@types/mocha": "^8.2.1",
     "@types/node": "^14.14.31",
+    "apollo-server": "^3.6.6",
     "codecov": "^3.8.3",
     "eslint": "^7.21.0",
     "graphql": "^16.3.0",
     "jest": "^26.6.3",
-    "mocha": "^8.3.1",
     "ts-jest": "^26.5.4",
     "typescript": "^4.6.3"
   },
@@ -25,18 +25,31 @@
     "build": "tsc -p .",
     "build:cjs": "tsc -p . -m commonjs --outDir dist/cjs",
     "build:all": "yarn build:cjs && yarn build",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "yarn build"
   },
   "jest": {
     "testEnvironment": "node",
     "transform": {
       "^.+\\.ts$": "ts-jest"
-    }
+    },
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ]
   },
   "dependencies": {
     "@graphql-tools/utils": "^8.6.5",
     "ajv": "^8.11.0",
     "apollo-server-plugin-base": "^3.5.2",
     "lodash": "^4.17.21"
-  }
+  },
+  "peerDependencies": {
+    "graphql": "^16.3.0"
+  },
+  "keywords": [
+    "graphql",
+    "directive",
+    "validate",
+    "validation"
+  ]
 }

@@ -25,6 +25,8 @@ npm i -S graphql-validate-directive
 
 ### Usage
 
+Use in the project.
+
 ```ts
 import {
   validateDirective,
@@ -44,3 +46,30 @@ const schema = makeExecutableSchema({
 
 validateDirective()(schema)
 ```
+
+Use in schema.
+
+```graphql
+# used on input field
+input PostInput {
+  title: String! @validate(minLength: 1, maxLength: 1000)
+  content: String! @validate(minLength: 1, maxLength: 1000)
+
+  # used on array
+  tags: [String!]
+    @validate(minItems: 1, maxItems: 10, minLength: 1, maxLength: 100)
+}
+
+type Mutation {
+  createPost(input: PostInput!): Post
+
+  # used on argument
+  createMessage(
+    content: String! @validate(minLength: 1, maxLength: 200)
+  ): Message
+}
+```
+
+### License
+
+MIT Licensed.

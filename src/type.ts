@@ -24,6 +24,8 @@ export interface ValidateOptions {
   uniqueItems?: true
 }
 
+// following code is used to validate the type declarations
+/* istanbul ignore file */
 const _assertType = <T extends true>(t?: T) => {}
 
 export type Eq<A, B> = (<T>() => T extends A ? 1 : 2) extends <

@@ -12,5 +12,5 @@ directive @validate(
   maxItems: Int
   minItems: Int
   uniqueItems: Boolean
-) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION | ARGUMENT_DEFINITION
+) on INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION
 `

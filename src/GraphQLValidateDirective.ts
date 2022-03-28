@@ -19,9 +19,9 @@ import Ajv from 'ajv'
 import type { JSONSchemaType } from 'ajv'
 import { getDirective } from '@graphql-tools/utils'
 import pick from 'lodash/pick'
-import { Maybe } from 'graphql/jsutils/Maybe'
+import type { Maybe } from 'graphql/jsutils/Maybe'
 import { DefaultValidateDirectiveName } from './constants'
-import { ValidateOptions } from './type'
+import type { ValidateOptions } from './type'
 import {
   KeywordsForArray,
   KeywordsForNumber,
@@ -39,7 +39,6 @@ export class GraphQLValidateDirective {
     type: GraphQLScalarType,
     opt: ValidateOptions,
   ): JSONSchemaType<any> {
-    // not validate custom scaler
     if (type === GraphQLInt) {
       return {
         type: 'integer',
@@ -61,6 +60,9 @@ export class GraphQLValidateDirective {
       }
     }
 
+    // not validate custom scaler
+    // return empty schema to match anything
+    /* istanbul ignore next */
     return {} as any
   }
 
@@ -113,8 +115,7 @@ export class GraphQLValidateDirective {
     }
     for (const [name, field] of Object.entries(fields)) {
       const directive = getDirective(this.schema, field, this.directiveName)
-      if (!directive) continue
-      properties[name] = this.getInputTypeSchema(field.type, directive[0])
+      properties[name] = this.getInputTypeSchema(field.type, directive?.[0])
     }
     return jsonSchema
   }
@@ -132,6 +133,7 @@ export class GraphQLValidateDirective {
   ): JSONSchemaType<Record<string, any>> {
     const properties: Record<string, any> = {}
     const jsonSchema: JSONSchemaType<Record<string, any>> = {
+      $async: true,
       type: 'object',
       properties,
       additionalProperties: true,
@@ -154,14 +156,16 @@ export class GraphQLValidateDirective {
     if (field.args.length === 0) return
     const validate = this.createValidator(field.args)
     const originalResolve = field.resolve
-    field.resolve = function resolverWithValidator(...args) {
-      validate(args[1])
-      if (validate.errors?.[0]) throw validate.errors[0]
+    field.resolve = async function resolverWithValidator(...args) {
+      await validate(args[1])
       return originalResolve?.apply(this, args)
     }
   }
 
   public composeResolver(type: Maybe<GraphQLObjectType>) {
+    // it's useless to applied with null or undefined
+    // add this check for safety and convenience to apply
+    /* istanbul ignore next */
     if (!type) return
     const fields = type.getFields()
     for (const [, field] of Object.entries(fields)) {

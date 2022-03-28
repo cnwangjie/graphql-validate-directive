@@ -20,7 +20,7 @@ describe('GraphQLValidateDirective', () => {
     }
 
     input TestD {
-      d: [String] @validate(uniqueItems: true)
+      d: [String]! @validate(uniqueItems: true)
     }
 
     input TestE {
