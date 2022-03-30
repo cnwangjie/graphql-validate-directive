@@ -14,6 +14,7 @@ import {
   GraphQLObjectType,
   GraphQLField,
   GraphQLArgument,
+  isObjectType,
 } from 'graphql'
 import Ajv from 'ajv'
 import type { JSONSchemaType } from 'ajv'
@@ -176,6 +177,10 @@ export class GraphQLValidateDirective {
   public transformSchema() {
     const typeMap = this.schema.getTypeMap()
     this.registerTypeSchemas(typeMap)
+    const objectTypes = Object.values(typeMap).filter(isObjectType)
+    for (const objectType of objectTypes) {
+      this.composeResolver(objectType)
+    }
     this.composeResolver(this.schema.getQueryType())
     this.composeResolver(this.schema.getMutationType())
   }

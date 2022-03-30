@@ -52,8 +52,8 @@ describe('validate', () => {
     })
   })
 
-  describe('nested field', () => {
-    it('should validate field on nested', async () => {
+  describe('nested input field', () => {
+    it('should validate nested input field', async () => {
       const t = testSchema(`#graphql
       input A {
         a: Int @validate(maximum: 1)
@@ -88,6 +88,49 @@ describe('validate', () => {
             }
           }
         })
+      }
+      `)
+    })
+  })
+
+  describe('nested field', () => {
+    it('should validate nested field', async () => {
+      const t = testSchema(
+        `#graphql
+      input Test {
+        a: Int @validate(maximum: 1)
+      }
+      type A {
+        test(input: Test): String
+      }
+      type Mutation {
+        a: A
+      }
+      `,
+        {
+          Mutation: {
+            a: () => {
+              return {}
+            },
+          },
+        },
+      )
+      await t.fail(`#graphql
+      mutation T {
+        a {
+          test(input: {
+            a: 2
+          })
+        }
+      }
+      `)
+      await t.pass(`#graphql
+      mutation T {
+        a {
+          test(input: {
+            a: 1
+          })
+        }
       }
       `)
     })

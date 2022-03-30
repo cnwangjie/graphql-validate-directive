@@ -5,10 +5,16 @@ import {
   GraphQLValidateDirectiveTypeDefs,
 } from '../src'
 
-export const wrap = (typeDefs: string) => {
+export const wrap = (typeDefs: string, resolvers?: any) => {
   const rootSchema = `#graphql
-    type Query {
-      hello: String
+    ${
+      typeDefs.includes('type Query')
+        ? ''
+        : `#graphql
+      type Query {
+        hello: String
+      }
+      `
     }
 
     schema {
@@ -18,6 +24,7 @@ export const wrap = (typeDefs: string) => {
     `
   const schema = makeExecutableSchema({
     typeDefs: [rootSchema, typeDefs, GraphQLValidateDirectiveTypeDefs],
+    resolvers,
   })
 
   const wrapper = new GraphQLValidateDirective(schema)
@@ -29,20 +36,21 @@ export const executeOn = (
   schema: any,
   source: string,
   variableValues?: any,
+  rootValue: any = {
+    Query: {},
+    Mutation: {},
+  },
 ) => {
   return graphql({
     schema,
     source,
-    rootValue: {
-      Query: {},
-      Mutation: {},
-    },
+    rootValue,
     variableValues,
   })
 }
 
-export const testSchema = (typeDefs: string) => {
-  const wrapper = wrap(typeDefs)
+export const testSchema = (typeDefs: string, resolvers?: any) => {
+  const wrapper = wrap(typeDefs, resolvers)
   const pass = async (source: string, variableValues?: any) => {
     const res = await executeOn(wrapper.schema, source, variableValues)
     expect(res.errors).toBeFalsy()
