@@ -181,7 +181,5 @@ export class GraphQLValidateDirective {
     for (const objectType of objectTypes) {
       this.composeResolver(objectType)
     }
-    this.composeResolver(this.schema.getQueryType())
-    this.composeResolver(this.schema.getMutationType())
   }
 }

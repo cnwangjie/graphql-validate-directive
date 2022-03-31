@@ -1,7 +1,7 @@
 {
   "name": "graphql-validate-directive",
   "description": "A GraphQL directive for input validation",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "types/index.d.ts",
