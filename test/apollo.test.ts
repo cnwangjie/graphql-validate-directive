@@ -1,8 +1,10 @@
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import { ApolloServer } from 'apollo-server'
+import type { GraphQLError } from 'graphql'
 import {
   apolloValidateDirectivePlugin,
   GraphQLValidateDirectiveTypeDefs,
+  isValidationError,
 } from '../src'
 
 describe('apollo plugin', () => {
@@ -18,9 +20,15 @@ describe('apollo plugin', () => {
     const schema = makeExecutableSchema({
       typeDefs: [customTypeDefs, GraphQLValidateDirectiveTypeDefs],
     })
+
+    let lastError: GraphQLError | undefined
     const apolloServer = new ApolloServer({
       schema,
       plugins: [apolloValidateDirectivePlugin()],
+      formatError: err => {
+        lastError = err
+        return err
+      },
     })
     const r0 = await apolloServer.executeOperation({
       query: `#graphql
@@ -32,5 +40,7 @@ describe('apollo plugin', () => {
     expect(r0.errors).toBeDefined()
     expect(r0.errors).toHaveLength(1)
     expect(r0.errors![0].message).toBe('validation failed')
+    expect(lastError).toBeDefined()
+    expect(isValidationError(lastError!.originalError)).toBe(true)
   })
 })

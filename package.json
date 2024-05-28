@@ -1,7 +1,7 @@
 {
   "name": "graphql-validate-directive",
   "description": "A GraphQL directive for input validation",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "types/index.d.ts",
@@ -22,9 +22,9 @@
     "typescript": "^4.6.3"
   },
   "scripts": {
-    "build": "tsc -p .",
+    "build": "yarn build:cjs && yarn build:esm",
+    "build:esm": "tsc -p . -m ESNext --outDir dist/esm",
     "build:cjs": "tsc -p . -m commonjs --outDir dist/cjs",
-    "build:all": "yarn build:cjs && yarn build",
     "test": "jest",
     "prepublishOnly": "yarn build"
   },
@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@graphql-tools/utils": "^8.6.5",
-    "ajv": "^8.11.0",
+    "ajv": "^8.14.0",
     "apollo-server-plugin-base": "^3.5.2",
     "lodash": "^4.17.21"
   },

@@ -1,33 +1,33 @@
-import {
-  GraphQLSchema,
-  GraphQLNamedType,
-  isInputObjectType,
-  isScalarType,
-  GraphQLInputType,
-  GraphQLScalarType,
-  GraphQLInt,
-  GraphQLFloat,
-  GraphQLString,
-  isListType,
-  GraphQLList,
-  isNonNullType,
-  GraphQLObjectType,
-  GraphQLField,
-  GraphQLArgument,
-  isObjectType,
-} from 'graphql'
-import Ajv from 'ajv'
-import type { JSONSchemaType } from 'ajv'
 import { getDirective } from '@graphql-tools/utils'
-import pick from 'lodash/pick'
-import type { Maybe } from 'graphql/jsutils/Maybe'
-import { DefaultValidateDirectiveName } from './constants'
-import type { ValidateOptions } from './type'
+import type { AsyncSchema, JSONSchemaType } from 'ajv'
+import Ajv from 'ajv'
 import {
+  GraphQLArgument,
+  GraphQLField,
+  GraphQLFloat,
+  GraphQLInputType,
+  GraphQLInt,
+  GraphQLList,
+  GraphQLNamedType,
+  GraphQLObjectType,
+  GraphQLScalarType,
+  GraphQLSchema,
+  GraphQLString,
+  isInputObjectType,
+  isListType,
+  isNonNullType,
+  isObjectType,
+  isScalarType,
+} from 'graphql'
+import type { Maybe } from 'graphql/jsutils/Maybe'
+import pick from 'lodash/pick'
+import {
+  DefaultValidateDirectiveName,
   KeywordsForArray,
   KeywordsForNumber,
   KeywordsForString,
 } from './constants'
+import type { ValidateOptions } from './type'
 
 export class GraphQLValidateDirective {
   constructor(
@@ -129,11 +129,9 @@ export class GraphQLValidateDirective {
     }
   }
 
-  public getArgsSchema(
-    args: readonly GraphQLArgument[],
-  ): JSONSchemaType<Record<string, any>> {
+  public getArgsSchema(args: readonly GraphQLArgument[]) {
     const properties: Record<string, any> = {}
-    const jsonSchema: JSONSchemaType<Record<string, any>> = {
+    const jsonSchema: AsyncSchema = {
       $async: true,
       type: 'object',
       properties,
